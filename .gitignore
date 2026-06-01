@@ -1,5 +1,90 @@
-bin/
-obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+## === Build outputs ===
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+arm64/
+AnyCPU/
+*.dll
+*.exe
+*.pdb
+*.xml
+*.deps.json
+*.runtimeconfig.json
+
+## === NuGet ===
+*.nupkg
+packages/
+!packages/build/
+*.nuspec
+
+## === User-specific files ===
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.tmp
+*.log
+
+## === Rider / JetBrains ===
+.idea/
+*.iml
+*.rider
+.rider/
+*.sln.iml
+out/
+
+## === Visual Studio ===
+.vs/
+*.csproj.user
+*.csproj.DotSettings.user
+*.sln.docstates
+*.sln.lastcodeanalysissucceeded
+*.sln.together
+*.sln.ide*
+
+## === WPF / XAML ===
+*.baml
+*.g.cs
+*.g.i.cs
+*.designer.cs
+*_DesignTime*.cs
+*.tmpproj
+
+## === .NET Core / .NET 8 ===
+*.msbuildlog
+*.msbuild*
+project.lock.json
+project.fragment.lock.json
+artifacts/
+publish/
+
+## === System files ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+*.swo
+
+## === Environment / Secrets ===
+*.env
+*.local
+appsettings*.local.json
+secrets.json
+
+## === Logs / Diagnostics ===
+*.log
+logs/
+dump/
+*.dmp
+
+## === Optional: don't commit local settings ===
+# appsettings.Development.json
+# settings.json
+
+## === Keep these (examples) ===
+# !appsettings.example.json
+# !README.md
