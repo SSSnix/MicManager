@@ -1,0 +1,135 @@
+﻿<Window x:Class="MicManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Mic Manager" Width="360" Height="460"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        ResizeMode="NoResize" Topmost="True" ShowInTaskbar="False"
+        MouseDown="Window_MouseDown">
+
+    <Window.Resources>
+        <Style TargetType="ToggleButton" x:Key="ModernToggle">
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <!-- Фон переключателя -->
+                            <Border x:Name="BackgroundBorder" 
+                                    Background="#2A2D35" 
+                                    CornerRadius="12"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"/>
+                            
+                            <!-- Кружок переключателя -->
+                            <Border x:Name="Thumb" 
+                                    Background="White" 
+                                    Width="18" Height="18" 
+                                    CornerRadius="9"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="3,0,0,0">
+                                <Border.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Grid>
+                        
+                        <ControlTemplate.Triggers>
+                            <!-- Когда включено -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="BackgroundBorder" Property="Background" Value="#00E59B"/>
+                                <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="Thumb" Property="Margin" Value="0,0,3,0"/>
+                            </Trigger>
+                            
+                            <!-- Hover эффект -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Background="#0B0C10" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <TextBlock Text="🎙 Mic Manager" FontSize="18" FontWeight="SemiBold" Foreground="#E4E6EB"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="─" Width="28" Height="28" Background="Transparent" Foreground="#8B92A5" 
+                            BorderThickness="0" FontSize="16" Click="Minimize_Click" Margin="0,0,8,0"/>
+                    <Button Content="✕" Width="28" Height="28" Background="Transparent" Foreground="#8B92A5" 
+                            BorderThickness="0" FontSize="14" Click="Close_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Device -->
+            <Border Grid.Row="1" Background="#15161A" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="Микрофон" FontSize="12" Foreground="#8B92A5" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="DeviceCombo" SelectionChanged="DeviceCombo_SelectionChanged" 
+                              Background="#1E2025" Foreground="#E4E6EB" BorderThickness="0" Height="32" Padding="8,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Volume -->
+            <Border Grid.Row="2" Background="#15161A" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid Margin="0,0,0,8">
+                        <TextBlock Text="Громкость" FontSize="12" Foreground="#8B92A5"/>
+                        <TextBlock x:Name="VolumeLabel" Text="50%" FontSize="12" Foreground="#00E59B" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5" ValueChanged="VolumeSlider_ValueChanged"
+                            Foreground="#00E59B"/>
+                    <Grid Margin="0,8,0,0">
+                        <TextBlock Text="Отключить микрофон" FontSize="12" Foreground="#8B92A5" VerticalAlignment="Center"/>
+                        <ToggleButton x:Name="MuteToggle" Style="{StaticResource ModernToggle}" HorizontalAlignment="Right"
+                                      Checked="MuteCheck_Changed" Unchecked="MuteCheck_Changed"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- Monitor & Test -->
+            <Border Grid.Row="3" Background="#15161A" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock Text="Мониторинг" FontSize="12" Foreground="#8B92A5"/>
+                        <ToggleButton x:Name="MonitorToggle" Style="{StaticResource ModernToggle}" HorizontalAlignment="Right"
+                                      Checked="MonitorCheck_Changed" Unchecked="MonitorCheck_Changed"/>
+                    </Grid>
+                    
+                    <ProgressBar x:Name="LevelMeter" Height="8" Minimum="0" Maximum="1" Background="#2A2D35" 
+                                 Foreground="#00E59B" Margin="0,0,0,12"/>
+                    
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock Text="Громкость мониторинга" FontSize="12" Foreground="#8B92A5"/>
+                        <TextBlock x:Name="MonitorVolLabel" Text="70%" FontSize="12" Foreground="#00E59B" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <Slider x:Name="MonitorVolumeSlider" Minimum="0" Maximum="1" Value="0.7" 
+                            IsEnabled="{Binding IsChecked, ElementName=MonitorToggle}" Foreground="#00E59B"/>
+                    
+                    <Button x:Name="TestBtn" Content="Проверить микрофон" Height="36" Background="#00E59B" 
+                            Foreground="#0B0C10" FontWeight="SemiBold" BorderThickness="0"
+                            Click="TestBtn_Click" Margin="0,12,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Footer -->
+            <TextBlock Grid.Row="5" Text="ЛКМ по значку в трее • ПКМ → Выход" FontSize="10" 
+                       Foreground="#8B92A5" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+        </Grid>
+    </Border>
+</Window>
