@@ -46,19 +46,24 @@ namespace MicManager
             {
                 Debug.WriteLine("[Tray] Creating NotifyIcon...");
                 
+                var iconUri = new Uri("pack://application:,,,/MicIcon.ico", UriKind.Absolute);
+                var streamResourceInfo = System.Windows.Application.GetResourceStream(iconUri);
+        
                 _trayIcon = new NotifyIcon
                 {
                     Text = "Mic Manager",
                     Visible = true,
-                    Icon = System.Drawing.SystemIcons.Application
+                    Icon = streamResourceInfo != null 
+                        ? new System.Drawing.Icon(streamResourceInfo.Stream) 
+                        : System.Drawing.SystemIcons.Application
                 };
-                
+        
                 _trayIcon.MouseClick += (s, e) => 
                 { 
                     Debug.WriteLine($"[Tray] Clicked: {e.Button}");
                     if (e.Button == MouseButtons.Left) ToggleVisibility(); 
                 };
-                
+        
                 var menu = new ContextMenuStrip();
                 menu.Items.Add("Открыть", null, (s, e) => ToggleVisibility());
                 menu.Items.Add("Выход", null, (s, e) => 
@@ -69,14 +74,18 @@ namespace MicManager
                     Application.Current.Shutdown(); 
                 });
                 _trayIcon.ContextMenuStrip = menu;
-                
+        
                 Debug.WriteLine("[Tray] NotifyIcon created successfully");
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"[Tray] ERROR: {ex.Message}");
-                MessageBox.Show($"Не удалось создать иконку в трее:\n{ex.Message}\n\nПриложение будет работать в оконном режиме.", 
-                    "Mic Manager", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _trayIcon = new NotifyIcon
+                {
+                    Text = "Mic Manager",
+                    Visible = true,
+                    Icon = System.Drawing.SystemIcons.Application
+                };
             }
         }
 
