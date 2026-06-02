@@ -122,7 +122,16 @@ namespace MicManager
             DeviceCombo.Items.Clear();
             var devices = _enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active);
             foreach (var dev in devices)
-                DeviceCombo.Items.Add(new System.Windows.Controls.ComboBoxItem { Content = dev.FriendlyName, Tag = dev });
+            {
+                var item = new System.Windows.Controls.ComboBoxItem 
+                { 
+                    Content = dev.FriendlyName, 
+                    Tag = dev,
+                    Background = System.Windows.Media.Brushes.White,
+                    Foreground = System.Windows.Media.Brushes.Black
+                };
+                DeviceCombo.Items.Add(item);
+            }
 
             try
             {
