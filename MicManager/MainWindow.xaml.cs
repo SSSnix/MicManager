@@ -283,5 +283,33 @@ namespace MicManager
         {
             if (e.ChangedButton == System.Windows.Input.MouseButton.Left) DragMove();
         }
+        
+        private void Slider_PreviewMouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var slider = sender as Slider;
+            if (slider == null) return;
+            var thumb = FindVisualChild<System.Windows.Controls.Primitives.Thumb>(slider);
+            if (thumb != null)
+            {
+                var mousePos = e.GetPosition(thumb);
+                var thumbRect = new Rect(0, 0, thumb.ActualWidth, thumb.ActualHeight);
+                if (!thumbRect.Contains(mousePos))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+        
+        private T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+        {
+            for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(obj, i);
+                if (child is T result) return result;
+                var childOfChild = FindVisualChild<T>(child);
+                if (childOfChild != null) return childOfChild;
+            }
+            return null;
+        }
     }
 }

@@ -109,6 +109,7 @@
                         <TextBlock x:Name="VolumeLabel" Text="50%" FontSize="12" Foreground="#00E59B" HorizontalAlignment="Right"/>
                     </Grid>
                     <Slider x:Name="VolumeSlider" Minimum="0" Maximum="1" Value="0.5" ValueChanged="VolumeSlider_ValueChanged"
+                            PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
                             Foreground="#00E59B"/>
                     <Grid Margin="0,8,0,0">
                         <TextBlock Text="Отключить микрофон" FontSize="12" Foreground="#8B92A5" VerticalAlignment="Center"/>
@@ -135,7 +136,8 @@
                         <TextBlock x:Name="MonitorVolLabel" Text="70%" FontSize="12" Foreground="#00E59B" HorizontalAlignment="Right"/>
                     </Grid>
                     <Slider x:Name="MonitorVolumeSlider" Minimum="0" Maximum="1" Value="0.7" 
-                            IsEnabled="{Binding IsChecked, ElementName=MonitorToggle}" Foreground="#00E59B"/>
+                            PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
+                            Foreground="#00E59B"/>
                     
                     <Button x:Name="TestBtn" Content="Проверить микрофон" Height="36" Background="#00E59B" 
                             Foreground="#0B0C10" FontWeight="SemiBold" BorderThickness="0"
